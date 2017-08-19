@@ -18,7 +18,6 @@ async function ensureAuthenticated() {
   const password = process.env.FIREBASE_AUTH_PASSWORD;
   if (!password) throw new Error('FIREBASE_AUTH_PASSWORD not provided in env vars');
 
-  console.log('user', firebase.auth().currentUser);
   if (firebase.auth().currentUser) {
     return firebase.auth().currentUser;
   }
