@@ -2,7 +2,7 @@
   "name": "power-heart-beat-pi",
   "version": "1.0.0",
   "description": "Runs on my Raspberry Pi and sends a heart beat signal",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/jaydp17/power-heart-beat-pi/issues"
   },
-  "homepage": "https://github.com/jaydp17/power-heart-beat-pi#readme"
+  "homepage": "https://github.com/jaydp17/power-heart-beat-pi#readme",
+  "dependencies": {
+    "dotenv": "4.0.0",
+    "firebase": "4.3.0"
+  },
+  "devDependencies": {
+    "prettier": "1.5.3"
+  }
 }
