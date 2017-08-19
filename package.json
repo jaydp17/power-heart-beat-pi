@@ -4,7 +4,10 @@
   "description": "Runs on my Raspberry Pi and sends a heart beat signal",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "prod:start": "NODE_ENV=production pm2 start src/index.js --instances 1 --name power-heart-beat",
+    "prod:stop": "NODE_ENV=production pm2 delete power-heart-beat"
   },
   "repository": {
     "type": "git",
