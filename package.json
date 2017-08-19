@@ -18,7 +18,8 @@
   "homepage": "https://github.com/jaydp17/power-heart-beat-pi#readme",
   "dependencies": {
     "dotenv": "4.0.0",
-    "firebase": "4.3.0"
+    "firebase": "4.3.0",
+    "moment": "2.18.1"
   },
   "devDependencies": {
     "prettier": "1.5.3"
