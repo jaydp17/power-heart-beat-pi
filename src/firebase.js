@@ -2,6 +2,7 @@
 
 const firebase = require('firebase');
 const utils = require('./utils');
+const logger = require('./logger');
 
 // Initialize Firebase
 const config = {
@@ -19,7 +20,7 @@ let isConnected = false; // stores the state of internet connectivity
 const connectedRef = firebase.database().ref('.info/connected');
 connectedRef.on('value', snap => {
   isConnected = snap.val();
-  console.log('[isConnected]', isConnected);
+  logger.verbose(`isConnected: ${isConnected}`);
 });
 
 // add a helper method to check if firebase is connected before sending data
@@ -35,7 +36,7 @@ firebase.waitForConnection = async () => {
     const ms = waitMs[i];
     await utils.delayPromise(ms);
     if (isConnected) {
-      console.log(`connected in ${ms}ms`);
+      logger.debug(`connected in ${ms}ms`);
       return;
     }
   }

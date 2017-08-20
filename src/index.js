@@ -9,21 +9,23 @@ const firebase = require('./firebase');
 const auth = require('./auth');
 const utils = require('./utils');
 const { INTERNET_CONNECTED, NO_INTERNET } = require('./constants');
+const logger = require('./logger');
 
 const isProd = process.env.NODE_ENV === 'production' || os.hostname() === 'raspberrypi';
 const dbPrefix = isProd ? 'powerData' : 'dev-powerData';
 
 setTimeout(() => {
-  console.log('Exiting after 50s of execution');
+  logger.error('Exiting after 50s of execution');
   process.exit(1);
 }, 50000); // 50s
 
 main();
 
 async function main() {
+  logger.verbose('Starting Up');
   await firebase.waitForConnection();
   await sendHeartBeat();
-  console.log('shutting down');
+  logger.verbose('Shutting Down');
   process.exit(0);
 }
 
@@ -35,6 +37,6 @@ async function sendHeartBeat() {
   const key = moment().format('YYYY/MM/DD/Z/HH/mm');
 
   const currentState = firebase.isConnected() ? INTERNET_CONNECTED : NO_INTERNET;
-  console.log(`sending ${key}: ${currentState}`);
+  logger.info(`sending ${key}: ${currentState}`);
   await firebase.database().ref(`${dbPrefix}/${key}`).set(currentState);
 }
