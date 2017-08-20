@@ -1,10 +1,9 @@
 'use strict';
 
-// load env vars from .env file
-require('dotenv').config();
-
-const moment = require('moment');
+const path = require('path');
 const os = require('os');
+const moment = require('moment');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const firebase = require('./firebase');
 const auth = require('./auth');
@@ -14,14 +13,18 @@ const { INTERNET_CONNECTED, NO_INTERNET } = require('./constants');
 const isProd = process.env.NODE_ENV === 'production' || os.hostname() === 'raspberrypi';
 const dbPrefix = isProd ? 'powerData' : 'dev-powerData';
 
+setTimeout(() => {
+  console.log('Exiting after 50s of execution');
+  process.exit(1);
+}, 50000); // 50s
+
 main();
 
 async function main() {
-  await utils.delayPromise(2000); // wait for firebase to connect
-  while (true) {
-    await sendHeartBeat();
-    await utils.delayPromise(60000); // 1 minute
-  }
+  await firebase.waitForConnection();
+  await sendHeartBeat();
+  console.log('shutting down');
+  process.exit(0);
 }
 
 async function sendHeartBeat() {
@@ -33,5 +36,5 @@ async function sendHeartBeat() {
 
   const currentState = firebase.isConnected() ? INTERNET_CONNECTED : NO_INTERNET;
   console.log(`sending ${key}: ${currentState}`);
-  firebase.database().ref(`${dbPrefix}/${key}`).set(currentState);
+  await firebase.database().ref(`${dbPrefix}/${key}`).set(currentState);
 }

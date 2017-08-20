@@ -1,6 +1,7 @@
 'use strict';
 
 const firebase = require('firebase');
+const utils = require('./utils');
 
 // Initialize Firebase
 const config = {
@@ -23,5 +24,21 @@ connectedRef.on('value', snap => {
 
 // add a helper method to check if firebase is connected before sending data
 firebase.isConnected = () => isConnected;
+
+/**
+ * Waits till a connection to firebase is established
+ * NOTE: it gives up after 10s
+ */
+firebase.waitForConnection = async () => {
+  const waitMs = [100, 200, 500, 1000, 2000, 3000, 4000];
+  for (let i = 0; i < waitMs.length; i++) {
+    const ms = waitMs[i];
+    await utils.delayPromise(ms);
+    if (isConnected) {
+      console.log(`connected in ${ms}ms`);
+      return;
+    }
+  }
+};
 
 module.exports = firebase;
