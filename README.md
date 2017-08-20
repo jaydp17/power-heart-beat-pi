@@ -19,19 +19,16 @@ $ cp .env.example .env
 # update the variables in .env
 $ vim .env
 
-# install pm2
-$ npm i -g pm2
-
 # install local deps
 $ yarn
 
-# start the process
-$ yarn prod:start
+# generate crontab command
+$ node deploy/generate-crontab-cmd.js
+# * * * * * NODE_ENV=production /home/pi/.nvm/versions/node/v8.4.0/bin/node /home/pi/power-heart-beat-pi/src/index.js >> /home/pi/cron-logs/power-heart-beat-pi.log 2>&1
+
+# paste it into crontab
+$ crontab -e
 ```
-
-## How to start pm2 on boot?
-pm2 has great documentation about how to do start the node process on boot over [here](http://pm2.keymetrics.io/docs/usage/startup/).
-
 
 ## License
 
